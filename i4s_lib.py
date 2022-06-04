@@ -1,6 +1,16 @@
 # importamos las librerías que vamos a necesitar
 import pandas as pd
 import numpy as np
+import os, fnmatch
+
+
+def find(pattern, path):
+    result = []
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if fnmatch.fnmatch(name, pattern):
+                result.append(os.path.join(root, name))
+    return result
 
 def read_im_raw(filename):
     
@@ -34,12 +44,19 @@ def read_im_raw(filename):
     
     return dd
 
-def read_im(filename):
+def read_im(filepattern, folder):
     
     dd=dict();
-   
+    
+    # find the file with a pattern
+    files=find(filepattern, folder)
+    if len(files) > 1:
+        print('Error reading files, probably duplicated')
+    file=files[0]
+    
+    
     # leer el fichero por líneas
-    f=open(filename)
+    f=open(file)
     lines=f.readlines()
     
     # obtener el tamaño de la cabecera
@@ -56,7 +73,7 @@ def read_im(filename):
     
     names=['datetime','doy','c1','c2','c3','c4']
     colspecs=[(0,23), (25,27), (32,40), (42,50), (52,60), (62,70)]
-    data=pd.read_fwf(filename,header=head_size,names=names, colspecs=colspecs)
+    data=pd.read_fwf(file,header=head_size,names=names, colspecs=colspecs)
     
     # Transform 99999 values to NaN
     data.c1 = np.where(data.c1 == 99999, data.c1*np.nan, data.c1)
@@ -66,6 +83,13 @@ def read_im(filename):
     
     # comprobar si el formato es 'HDZF' y convertir si es necesario
     if comp == 'XYZF':
+        x = data.c1
+        y = data.c2
+        h = np.sqrt(x**2+y**2)
+        d = 180./np.pi*60.*np.arctan2(y,x)
+        data.c1=h
+        data.c2=d
+    if comp == 'XYZG':
         x = data.c1
         y = data.c2
         h = np.sqrt(x**2+y**2)
