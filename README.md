@@ -8,7 +8,7 @@
 
 
 This repository contains:
-- Jupyter notebooks of seven lessons (L01 - L07) that will give you a familiarization with the geomagnetic field disturbances as recorded on the ground and guide you through the process of creating a geomagnetic index. The lessons contains Questions (labeled as Qnn, where nn is the number) and empty space for Answers (labeled as Ann). You can follow the lessons and answer the questions to check your understanding.
+- Jupyter notebooks of seven lessons (L01 - L07) that will give you a familiarization with the geomagnetic field disturbances as recorded on the ground and guide you through the process of creating a geomagnetic index. The lessons contain Questions (labeled as Qnn, where nn is the number) and empty space for Answers (labeled as Ann). You can follow the lessons and answer the questions to check your understanding.
 - The folder "i4s_geomag_data" with data from four observatories (those used for creating the Dst index, KAK, SJG, HER and HON). The data is contained in daily files covering all the events studied during the i4s school.
 - A library with a few functions used on the lessons "i4s_lib.py"
 - The requirements.txt file with the minimum packages needed to run the lessons
